@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Komposisi Fungsi</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 800px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        h1 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        h2 {
+            color: #2575fc;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="number"]:focus {
+            border-color: #2575fc;
+            outline: none;
+        }
+        
+        button {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .result {
+            background-color: #f8f9fa;
+            border-left: 5px solid #2575fc;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+        
+        .function-display {
+            display: flex;
+            justify-content: space-around;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        
+        .function-card {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            width: 45%;
+            min-width: 250px;
+            text-align: center;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .function-card h3 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .function-card p {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .composition {
+            background-color: #eef4ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .step-calculation {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        
+        @media (max-width: 600px) {
+            .function-card {
+                width: 100%;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Kalkulator Komposisi Fungsi</h1>
+    
+    <div class="container">
+        <div class="function-display">
+            <div class="function-card">
+                <h3>Fungsi f(x)</h3>
+                <p>f(x) = 2x + 3</p>
+            </div>
+            <div class="function-card">
+                <h3>Fungsi g(x)</h3>
+                <p>g(x) = x²</p>
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <label for="inputX">Masukkan nilai x:</label>
+            <input type="number" id="inputX" placeholder="Masukkan angka">
+        </div>
+        
+        <button id="calculateBtn">Hitung Komposisi</button>
+        
+        <div class="result">
+            <h2>Hasil Perhitungan</h2>
+            <div id="resultContainer">
+                <p>Masukkan nilai x dan klik tombol hitung untuk melihat hasil.</p>
+            </div>
+        </div>
+        
+        <div class="composition">
+            <h2>Penjelasan Komposisi Fungsi</h2>
+            <p>Komposisi fungsi (f∘g)(x) berarti menerapkan fungsi g terlebih dahulu, kemudian menerapkan fungsi f pada hasilnya: f(g(x)).</p>
+            <p>Komposisi fungsi (g∘f)(x) berarti menerapkan fungsi f terlebih dahulu, kemudian menerapkan fungsi g pada hasilnya: g(f(x)).</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const calculateBtn = document.getElementById('calculateBtn');
+            const inputX = document.getElementById('inputX');
+            const resultContainer = document.getElementById('resultContainer');
+            
+            calculateBtn.addEventListener('click', calculateComposition);
+            
+            function f(x) {
+                return 2 * x + 3;
+            }
+            
+            function g(x) {
+                return x * x;
+            }
+            
+            function compose(f, g, x) {
+                return f(g(x));
+            }
+            
+            function calculateComposition() {
+                const x = parseFloat(inputX.value);
+                
+                if (isNaN(x)) {
+                    resultContainer.innerHTML = '<p style="color: red;">Masukkan nilai x yang valid!</p>';
+                    return;
+                }
+                
+                const hasil_fg = compose(f, g, x);
+                const hasil_gf = compose(g, f, x);
+                
+                // Menampilkan hasil dengan penjelasan langkah demi langkah
+                resultContainer.innerHTML = `
+                    <p><strong>Untuk x = ${x}:</strong></p>
+                    <div class="step-calculation">
+                        <strong>(f∘g)(${x}) = f(g(${x}))</strong>
+                        Langkah 1: g(${x}) = ${x}² = ${g(x)}
+                        Langkah 2: f(${g(x)}) = 2*${g(x)} + 3 = ${hasil_fg}
+                    </div>
+                    <p><strong>(f∘g)(${x}) = ${hasil_fg}</strong></p>
+                    
+                    <div class="step-calculation">
+                        <strong>(g∘f)(${x}) = g(f(${x}))</strong>
+                        Langkah 1: f(${x}) = 2*${x} + 3 = ${f(x)}
+                        Langkah 2: g(${f(x)}) = ${f(x)}² = ${hasil_gf}
+                    </div>
+                    <p><strong>(g∘f)(${x}) = ${hasil_gf}</strong></p>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
